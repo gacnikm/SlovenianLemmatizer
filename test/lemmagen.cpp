@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "lemmagen.h"
+#include "../src/lemmagen.h"
 
 #ifndef DATA_PATH
     #define DATA_PATH "../data"

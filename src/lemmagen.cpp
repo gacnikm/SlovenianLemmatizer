@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include "../include/lemmagen.h"
+#include "lemmagen.h"
 #include "RdrLemmatizer.h"
 
 #define HAS_MUTEX __cplusplus >= 201103L || (defined(_MSC_VER) && _MSC_VER >= 1900)
