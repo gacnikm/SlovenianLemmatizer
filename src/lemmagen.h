@@ -20,6 +20,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #ifndef SL_LEMMATIZER_H
 #define SL_LEMMATIZER_H
 
+#if defined(_MSC_VER) && _MSC_VER < 1600
+#include "stdint-msvc90.h"
+	#define nullptr NULL
+#else
+#include <cstdint>
+#endif
+
+
 #ifdef _WIN32
 #define EXPORT_API __declspec(dllexport)
 #else
