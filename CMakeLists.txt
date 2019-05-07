@@ -24,15 +24,15 @@ add_library(lemmagen SHARED ${CMAKE_CURRENT_SOURCE_DIR}/src/lemmagen.cpp)
 target_link_libraries(lemmagen rdrlemmatizer)
 
 
-target_compile_definitions(lemmagen PRIVATE _FORTIFY_SOURCE=2)
-target_include_directories(lemmagen INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
-set_target_properties(lemmagen PROPERTIES
-    CXX_VISIBILITY_PRESET hidden)
+# ========================
+# SOLR LEMMATIZER JNI INTERFACE LIBRARY
+# ========================
 
-# Set OS specific compile flags
-if (APPLE)
-    set_target_properties(lemmagen PROPERTIES LINK_FLAGS ${MACOS_LINKER_FLAGS})
-endif(APPLE)
+FIND_PACKAGE(JNI REQUIRED lemmatizer)
+
+add_library(lemmatizer SHARED  ${CMAKE_CURRENT_SOURCE_DIR}/src/sl_lemmatizer_java.cpp)
+target_include_directories(lemmatizer PUBLIC ${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2})
+target_link_libraries(lemmatizer rdrlemmatizer)
 
 # ========================
 # BINARY
