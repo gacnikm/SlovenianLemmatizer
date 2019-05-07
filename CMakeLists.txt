@@ -43,7 +43,7 @@ include(FetchContent)
 include(GoogleTest)
 
 if (WIN32)
-  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif(WIN32)
 
 FetchContent_Declare(
@@ -54,8 +54,8 @@ FetchContent_Declare(
 
 FetchContent_GetProperties(googletest)
 if(NOT googletest_POPULATED)
-  FetchContent_Populate(googletest)
-  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+    FetchContent_Populate(googletest)
+    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
 endif()
 
 enable_testing()
@@ -64,3 +64,37 @@ file(GLOB lemmagen_test_files ${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp)
 add_executable(lemmagen_tests ${lemmagen_test_files})
 target_link_libraries(lemmagen_tests lemmagen gtest gtest_main)
 gtest_add_tests(TARGET lemmagen_tests AUTO)
+
+
+# ========================
+# Set OS specific compiler flags/defs
+# ========================
+
+if (UNIX)
+  set(COMPILER_FLAGS -O3 -ffunction-sections -fdata-sections -fstack-protector -fvisibility-inlines-hidden -static -std=c++11 -fPIC)
+  set(COMPILER_FLAGS_WARNINGS -Wall -Wno-c++98-compat -Wno-old-style-cast -Wno-c++98-compat-pedantic -Wno-cast-align -Wno-padded)
+  set(COMPILER_FLAGS ${COMPILER_FLAGS_WARNINGS} ${COMPILER_FLAGS})
+  set(COMPILER_DEFS _FORTIFY_SOURCE=2)
+endif(UNIX)
+
+if (WIN32)
+  set(COMPILER_FLAGS /EHsc)
+endif(WIN32)
+
+set_target_properties(gmock_main lemmagen_tests lemmagen rdrlemmatizer lemmatizer PROPERTIES COMPILE_OPTIONS "${COMPILER_FLAGS}")
+set_target_properties(lemmagen_tests lemmagen rdrlemmatizer lemmatizer PROPERTIES COMPILE_DEFINITIONS "${COMPILER_DEFS}")
+
+
+# ========================
+# Set OS specific linker flags
+# ========================
+
+if (UNIX)
+  set(LINKER_FLAGS "-Wl,-z,noexecstack -Wl,-z,now -Wl,-z,relro -Wl,--gc-sections")
+endif(UNIX)
+
+if (APPLE)
+ set(LINKER_FLAGS "-Wl,-dead_strip")
+endif(APPLE)
+
+set_target_properties(lemmagen_tests lemmagen rdrlemmatizer lemmatizer PROPERTIES LINK_FLAGS "${LINKER_FLAGS}")
