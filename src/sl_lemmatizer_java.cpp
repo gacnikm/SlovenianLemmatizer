@@ -23,33 +23,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #include "RdrLemmatizer.h"
 
 // Private lemmatizer instance
-RdrLemmatizer *lem_instance = NULL;
+RdrLemmatizer *lem_instance = nullptr;
 
 JNIEXPORT jint JNICALL Java_si_virag_lemmatizer_SlLemmatizer_loadLanguageLibrary(JNIEnv *jniEnv, jobject jObject, jstring jFileName)
 {
-	const char* fileName = jniEnv->GetStringUTFChars(jFileName, 0);
+	const char* fileName = jniEnv->GetStringUTFChars(jFileName, nullptr);
 	// Check if file exists first
-	ifstream dataFile(fileName);
+	std::ifstream dataFile(fileName);
 	if (!dataFile.good()) {
 		dataFile.close();
 		jclass exceptionClass = jniEnv->FindClass("java/io/IOException");
 		jniEnv->ThrowNew(exceptionClass, "Could not find language dictionary file, check path!");
 		return -1;
-	};
+	}
 	dataFile.close();
 
-	if (lem_instance != NULL)
-	{
-		delete lem_instance;
-	}
+	delete lem_instance;
 
 	lem_instance = new RdrLemmatizer(fileName);
 	return 0;
-};
+}
 
 JNIEXPORT jint JNICALL Java_si_virag_lemmatizer_SlLemmatizer_lemmatize(JNIEnv *jniEnv, jobject jObject, jobject inputWord, jobject output)
 {
-	if (lem_instance == NULL)
+	if (lem_instance == nullptr)
 	{
 		jclass exceptionClass = jniEnv->FindClass("java/lang/Exception");
 		jniEnv->ThrowNew(exceptionClass, "Language data file not loaded, call loadLanguageLibrary first!");
