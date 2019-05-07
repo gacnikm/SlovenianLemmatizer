@@ -38,8 +38,8 @@ target_link_libraries(lemmatizer rdrlemmatizer)
 # BINARY
 # ========================
 
-#add_executable(lemmagen_bin src/main.c)
-#target_link_libraries(lemmagen_bin lemmagen)
+add_executable(lemmagen_bin ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
+target_link_libraries(lemmagen_bin lemmagen)
 
 # ========================
 # TESTS
