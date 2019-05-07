@@ -4,9 +4,10 @@ from Cython.Build import cythonize
 import os
 import platform
 
-root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+root_dir = os.path.dirname(os.path.realpath(__file__))
+python_src_dir = os.path.join(root_dir, "python")
 src_dir = os.path.join(root_dir, "src")
-include_dir = os.path.join(root_dir, "include")
+include_dir = os.path.join(root_dir, "src")
 
 # Setup compilation arguments for native code
 compile_args = []
@@ -22,7 +23,7 @@ elif os.name == 'nt':
   link_args = []
 
 lib = Extension('lemmagen.libLemmagen',
-                ["lemmagen/libLemmagen.pyx", os.path.join(src_dir, "lemmagen.cpp"), os.path.join(src_dir, "RdrLemmatizer.cpp")],
+                [ os.path.join(python_src_dir, "lemmagen/libLemmagen.pyx"), os.path.join(src_dir, "lemmagen.cpp"), os.path.join(src_dir, "RdrLemmatizer.cpp")],
                 extra_compile_args=compile_args,
                 extra_link_args=link_args,
                 include_dirs=[include_dir])
