@@ -4,6 +4,12 @@ project(LemmaGen VERSION 1.3.0
                  LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 11)
 
+# JAVA HEADLESS
+if (UNIX)
+ set(JAVA_AWT_LIBRARY NotNeeded)
+ set(JAVA_AWT_INCLUDE_PATH NotNeeded)
+endif(UNIX)
+
 # ========================
 # SHARED LIBRARY
 # ========================
