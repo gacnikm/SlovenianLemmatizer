@@ -52,10 +52,17 @@ if (WIN32)
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 endif(WIN32)
 
+
+# "warning C4616: #pragma warning : warning number '5046' not a valid compiler warning" error:
+# https://github.com/google/googletest/commit/a2a15f2cefcfceaa6cee5b674a9b447359268ee9
+#
+# "MSVC < 2010 is not supported": https://github.com/google/googletest/issues/1848
+#
+# "The 1.8.x is the last release supporting pre-C++11 compilers.": https://github.com/google/googletest/releases/tag/release-1.8.1
 FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        release-1.8.1
+        googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        a2a15f2cefcfceaa6cee5b674a9b447359268ee9
 )
 
 FetchContent_GetProperties(googletest)
