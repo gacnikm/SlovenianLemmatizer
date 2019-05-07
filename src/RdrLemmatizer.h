@@ -18,6 +18,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 ******************************************************************************/
 #pragma once
 
+#ifndef RDRLEMMATIZER_H
+#define RDRLEMMATIZER_H
+
+#ifdef _WIN32
+#define RDR_EXPORT_API __declspec(dllexport)
+#else
+#define RDR_EXPORT_API __attribute__((visibility("default")))
+#endif
+
 #define AllInOneFile
 
 //-------------------------------------------------------------------------------------------
@@ -78,8 +87,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 			iAddr += iSize
 
 //-------------------------------------------------------------------------------------------
-
-class RdrLemmatizer{
+#ifdef __cplusplus
+extern "C" {
+#endif
+class RDR_EXPORT_API RdrLemmatizer{
 public:
 	uint8_t* abData;
 	int32_t iDataLen;
@@ -92,3 +103,8 @@ public:
 
 	char *Lemmatize(const char *acWord, char *acOutBuffer = nullptr) const;
 };
+#ifdef __cplusplus
+}
+#endif
+
+#endif
