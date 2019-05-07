@@ -1,5 +1,5 @@
 # cython: language_level=3
-
+# distutils: language = c++
 """
 ******************************************************************************
 This file is part of the lemmagen library. It gives support for lemmatization.
@@ -29,7 +29,7 @@ cdef extern from "lemmagen.h":
     void lem_lemmatize_word(const char *input_word, char *output_word)
 
 cdef class Lemmagen:
-    cdef char* output_buffer;
+    cdef char* output_buffer
 
     STATUS_OK = 0
     STATUS_FILE_NOT_FOUND = -1
